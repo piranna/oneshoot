@@ -1,0 +1,29 @@
+{
+  "name": "oneshoot",
+  "version": "0.0.0",
+  "description": "WebSockets and static web server for just one request",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piranna/oneshoot.git"
+  },
+  "keywords": [
+    "NodeOS"
+  ],
+  "author": "Jesús Leganés Combarro 'piranna'",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piranna/oneshoot/issues"
+  },
+  "homepage": "https://github.com/piranna/oneshoot#readme",
+  "dependencies": {
+    "escape-html": "^1.0.3",
+    "finalhandler": "^0.4.0",
+    "serve-static": "^1.10.0",
+    "ws": "^0.8.0"
+  }
+}
