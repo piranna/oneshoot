@@ -5,6 +5,7 @@ var parse = require('url').parse
 var spawn = require('child_process').spawn
 
 var finalhandler    = require('finalhandler')
+var parseArgs       = require('minimist')
 var serveStatic     = require('serve-static')
 var WebSocketServer = require('ws').Server
 
@@ -15,16 +16,15 @@ const TIMEOUT = 5*1000
 
 
 // Check arguments
-var argv = process.argv.slice(2)
-if(!argv.length)
+var args = parseArgs(process.argv.slice(2),
 {
-  console.error('PORT argument is mandatory')
-  process.exit(1)
-}
+  default:
+  {
+    port: 0
+  }
+})
 
-var port    = argv.shift()
-var command = argv.shift()
-
+var command = args.command
 if(!command) console.warn('COMMAND not given, WebSockets are disabled')
 
 
@@ -87,7 +87,7 @@ if(command)
       cwd: parse(ws.upgradeReq.url).pathname || '/'
     }
 
-    var cp = spawn(command, argv, options)
+    var cp = spawn(command, args._, options)
 
     var send  = ws.send.bind(ws)
     var close = ws.close.bind(ws, undefined)
@@ -106,5 +106,8 @@ if(command)
 
 
 // Start server
-server.listen(port)
+server.listen(args.port, function()
+{
+  console.log(this.address().port)
+})
 startTimeout()
