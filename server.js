@@ -10,39 +10,10 @@ var finalhandler    = require('finalhandler')
 var serveStatic     = require('serve-static')
 var WebSocketServer = require('ws').Server
 
+var directory = require('./directory')
+
 
 const TIMEOUT = 5*1000
-
-
-function directory(req, res, done)
-{
-  return function(error)
-  {
-    if(error) return done(error)
-
-    var url = escapeHtml(req.originalUrl || req.url)
-
-    fs.stat(url, function(error, stats)
-    {
-      if(error) return done(error)
-
-      if(!stats.isDirectory()) return done()
-
-      fs.readdir(url, function(error, files)
-      {
-        if(error) return done(error)
-
-        var body = JSON.stringify(files)
-
-        // standard headers
-        res.setHeader('Content-Type', 'application/json')
-        res.setHeader('Content-Length', body.length)
-
-        res.end(body)
-      })
-    })
-  }
-}
 
 
 // Check arguments
