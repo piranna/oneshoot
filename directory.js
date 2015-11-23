@@ -1,3 +1,10 @@
+var fs   = require('fs')
+var join = require('path').join
+
+var escapeHtml = require('escape-html')
+var map        = require('async').map
+
+
 function directory(req, res, done)
 {
   return function(error)
@@ -16,13 +23,29 @@ function directory(req, res, done)
       {
         if(error) return done(error)
 
-        var body = JSON.stringify(files)
+        map(files, function(item, callback)
+        {
+          fs.stat(join(url, item), function(error, stats)
+          {
+            if(error) return callback(error)
 
-        // standard headers
-        res.setHeader('Content-Type', 'application/json')
-        res.setHeader('Content-Length', body.length)
+            stats.name = item
 
-        res.end(body)
+            callback(null, stats)
+          })
+        },
+        function(error, results)
+        {
+          if(error) return done(error)
+
+          var body = JSON.stringify(results)
+
+          // standard headers
+          res.setHeader('Content-Type', 'application/json')
+          res.setHeader('Content-Length', body.length)
+
+          res.end(body)
+        })
       })
     })
   }

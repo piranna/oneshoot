@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-var fs    = require('fs')
 var http  = require('http')
 var parse = require('url').parse
 var spawn = require('child_process').spawn
 
-var escapeHtml      = require('escape-html')
 var finalhandler    = require('finalhandler')
 var serveStatic     = require('serve-static')
 var WebSocketServer = require('ws').Server
