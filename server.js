@@ -12,16 +12,17 @@ var WebSocketServer = require('ws').Server
 var directory = require('./directory')
 
 
-const TIMEOUT = 5*1000
-
-
 // Check arguments
 var args = parseArgs(process.argv.slice(2),
 {
+  string: 'hostname',
   default:
   {
-    port: 0
-  }
+    hostname: '0.0.0.0',
+    port: 0,
+    timeout: 5
+  },
+  '--': true
 })
 
 var command = args.command
@@ -34,7 +35,8 @@ var server = http.createServer()
 var timeout
 function startTimeout()
 {
-  timeout = setTimeout(server.close.bind(server), TIMEOUT)
+  if(args.timeout)
+    timeout = setTimeout(server.close.bind(server), args.timeout*1000)
 }
 
 var socketClossed = server.getConnections.bind(server, function(error, count)
@@ -87,7 +89,7 @@ if(command)
       cwd: parse(ws.upgradeReq.url).pathname || '/'
     }
 
-    var cp = spawn(command, args._, options)
+    var cp = spawn(command, args['--'], options)
 
     var send  = ws.send.bind(ws)
     var close = ws.close.bind(ws, undefined)
@@ -106,7 +108,7 @@ if(command)
 
 
 // Start server
-server.listen(args.port, function()
+server.listen(args.port, args.hostname, function()
 {
   console.log(this.address().port)
 })
