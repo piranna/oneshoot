@@ -12,7 +12,7 @@ var createServer = require('./index').createServer
 var directory    = require('./directory')
 
 
-const HOME = process.env.HOME
+const HOME = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
 
 
 // Check arguments
