@@ -12,6 +12,9 @@ var createServer = require('./index').createServer
 var directory    = require('./directory')
 
 
+const HOME = process.env.HOME
+
+
 // Check arguments
 var args = minimist(process.argv.slice(2),
 {
@@ -39,7 +42,7 @@ var options =
   index: false
 }
 
-var static = serveStatic('/', options)
+var static = serveStatic(HOME, options)
 
 server.on('request', function(req, res)
 {
@@ -53,18 +56,13 @@ server.on('request', function(req, res)
 // WebSockets
 if(command)
 {
-  var options =
-  {
-    server: server
-  }
-
-  var wss = new WebSocketServer(options)
+  var wss = new WebSocketServer({server: server})
 
   wss.on('connection', function connection(ws)
   {
     var options =
     {
-      cwd: parse(ws.upgradeReq.url).pathname || '/'
+      cwd: parse(ws.upgradeReq.url).pathname || HOME
     }
 
     var cp = spawn(command, args['--'], options)
