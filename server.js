@@ -1,26 +1,25 @@
 #!/usr/bin/env node
 
-var http  = require('http')
 var parse = require('url').parse
 var spawn = require('child_process').spawn
 
 var finalhandler    = require('finalhandler')
-var parseArgs       = require('minimist')
+var minimist        = require('minimist')
 var serveStatic     = require('serve-static')
 var WebSocketServer = require('ws').Server
 
-var directory = require('./directory')
+var createServer = require('./index').createServer
+var directory    = require('./directory')
 
 
 // Check arguments
-var args = parseArgs(process.argv.slice(2),
+var args = minimist(process.argv.slice(2),
 {
   string: 'hostname',
   default:
   {
     hostname: '0.0.0.0',
-    port: 0,
-    timeout: 5
+    port: 0
   },
   '--': true
 })
@@ -30,28 +29,7 @@ if(!command) console.warn('COMMAND not given, WebSockets are disabled')
 
 
 // Create server
-var server = http.createServer()
-
-var timeout
-function startTimeout()
-{
-  if(args.timeout)
-    timeout = setTimeout(server.close.bind(server), args.timeout*1000)
-}
-
-var socketClossed = server.getConnections.bind(server, function(error, count)
-{
-  if(error) return console.trace(error)
-
-  if(count <= 0) startTimeout()
-})
-
-server.on('connection', function(socket)
-{
-  clearTimeout(timeout)
-
-  socket.on('close', socketClossed)
-})
+var server = createServer(args.timeout)
 
 
 // HTTP
@@ -112,4 +90,3 @@ server.listen(args.port, args.hostname, function()
 {
   console.log(this.address().port)
 })
-startTimeout()

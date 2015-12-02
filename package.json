@@ -2,7 +2,7 @@
   "name": "oneshoot",
   "version": "0.0.2",
   "description": "WebSockets and static web server for just one request",
-  "main": "server.js",
+  "main": "lib",
   "bin": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
