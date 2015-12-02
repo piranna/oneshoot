@@ -86,5 +86,11 @@ if(command)
 // Start server
 server.listen(args.port, args.hostname, function()
 {
-  console.log(this.address().port)
+  var port = this.address().port
+
+  // Executed with `child_process.fork()`, send port over comunnication channel
+  if(process.send) return process.send(port)
+
+  // Running standalone, show port on stdout
+  console.log(port)
 })
