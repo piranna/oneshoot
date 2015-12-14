@@ -1,6 +1,6 @@
 {
   "name": "oneshoot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "WebSockets and static web server for just one request",
   "main": "lib",
   "bin": "server.js",

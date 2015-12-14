@@ -8,8 +8,8 @@ var minimist        = require('minimist')
 var serveStatic     = require('serve-static')
 var WebSocketServer = require('ws').Server
 
-var createServer = require('./index').createServer
-var directory    = require('./directory')
+var OneShoot  = require('./lib')
+var directory = require('./lib/directory')
 
 
 const HOME = process.env.HOME
@@ -32,7 +32,7 @@ if(!command) console.warn('COMMAND not given, WebSockets are disabled')
 
 
 // Create server
-var server = createServer(args.timeout)
+var server = OneShoot(args.timeout).createServer()
 
 
 // HTTP
