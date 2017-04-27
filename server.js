@@ -12,7 +12,7 @@ var OneShoot  = require('./lib')
 var directory = require('./lib/directory')
 
 
-const HOME = process.env.HOME
+const HOME = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
 
 
 // Check arguments
