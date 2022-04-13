@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/piranna/oneshoot#readme",
   "dependencies": {
-    "async": "^1.5.0",
+    "async": "^3.2.2",
     "escape-html": "^1.0.3",
     "finalhandler": "^0.4.0",
     "minimist": "^1.2.0",
